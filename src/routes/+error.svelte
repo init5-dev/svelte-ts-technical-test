@@ -6,11 +6,14 @@
   <div class="error">
     {$page.error.message}
   </div>
+  <a href='/'>Retry</a>
 </div>
 
 <style>
   div {
     display: flex;
+    flex-direction: column;
+    gap: 10px;
     align-items: center;
     justify-content: center;
   }
@@ -24,4 +27,15 @@
     font-weight: bold;
     text-align: center;
   }
+
+  a {
+		text-decoration: none;
+		color: #0099ff;
+		padding: 5px 10px;
+	}
+
+  a:hover {
+		color: #007bff;
+    text-decoration: underline;
+	}
 </style>

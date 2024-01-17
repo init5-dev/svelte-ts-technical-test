@@ -1,4 +1,4 @@
-<form method="post" use:enhance enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data">
 	<div>
 		<label for="file">Upload file</label>
 		<input type="file" id="file" name="fileToUpload" accept=".json" required />

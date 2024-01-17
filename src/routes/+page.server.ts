@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit'
-import { PrismaClient } from "@prisma/client"
+import { Prisma, PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient()
 
@@ -32,6 +32,14 @@ export const actions = {
 
       console.log('Created new cost with id:', newCost.id)
     } catch (e) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError) {
+        if (e.code === 'P2002') {
+          return error(422, {
+            message: 'This cost is already registered'
+          })
+        }
+      }
+
       return error(422, {
         message: 'Malformed cost file'
       })
