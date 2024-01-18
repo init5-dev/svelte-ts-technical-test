@@ -6,7 +6,7 @@
   <div class="error">
     {$page?.error?.message}
   </div>
-  <a href='/costs/new'>Retry</a>
+  <a href='/costs'>Retry</a>
 </div>
 
 <style>

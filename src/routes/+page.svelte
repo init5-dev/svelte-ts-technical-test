@@ -3,8 +3,7 @@
 </script>
 
 <h1>Welcome!</h1>
-<h2></h2>
-<p>Register a new cost</p>
+<p><a href="/costs/new">Register a new cost</a></p>
 
 <p>or</p>
 <p><a href="/costs/upload">Upload cost</a></p>

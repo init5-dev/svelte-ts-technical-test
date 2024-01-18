@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client"
 import {Cost, Category} from '../src/lib/models/Cost'
 import {faker} from '@faker-js/faker'
-import categories from "./data/categories"
 
 const prisma = new PrismaClient()
 

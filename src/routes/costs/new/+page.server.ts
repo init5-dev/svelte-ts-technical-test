@@ -1,4 +1,4 @@
-import { error } from '@sveltejs/kit'
+import { error, redirect } from '@sveltejs/kit'
 import { PrismaClient } from "@prisma/client"
 import type { PageServerLoad } from "../$types.js"
 import type { Cost } from "$lib/models/Cost.js"
@@ -30,6 +30,8 @@ export const actions = {
       file: faker.system.filePath()
     }
 
+    let success = false
+
     try {
       await prisma.category.update({
         where: {
@@ -41,11 +43,14 @@ export const actions = {
           }
         }
       })
+
+      success = true
     } catch (err) {
       return error(500, {
         message: 'Error creating new cost'
       })
     }
    
+    if (success) throw redirect(302, '/costs') 
   }
 }

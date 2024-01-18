@@ -10,5 +10,5 @@ export interface Cost {
   categoryId?: number
   amount: number
   date: Date
-  file: string | null
+  file?: string| null
 }

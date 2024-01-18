@@ -1,43 +1,47 @@
 <script lang="ts">
-  import type {Cost, Category} from "$lib/models/Cost"
-	import type { PageData } from "../../routes/$types";
+	import type { Cost, Category } from '$lib/models/Cost';
+	import type { PageData } from '../../routes/$types';
 
-	export let data: PageData
+	export let data: PageData;
 
-  let cost: Cost = {
-    amount: 0,
-    date: new Date(),
-  };
+	let cost: Cost = {
+		amount: 0,
+		date: new Date()
+	};
 
-	let selectedCategory = ''
+	let selectedCategory = '';
 
-  async function handleSubmit() {
-    console.log('Cost data:', cost);
-  }
+	const categories: string[] = [];
+
+	if ('feed' in data) {
+		for (const e of Object(data.feed)) {
+			categories.push(e);
+		}
+	}
 </script>
 
 <form method="post" enctype="multipart/form-data">
-  <div>
-    <label for="category">Category:</label>
-    <select name='category' bind:value={selectedCategory}>
+	<div>
+		<label for="category">Category:</label>
+		<select name="category" bind:value={selectedCategory}>
 			<option value="">Select a category</option>
-			{#each data.feed as category}
+			{#each categories as category}
 				<option value={category}>{category}</option>
 			{/each}
 		</select>
-  </div>
+	</div>
 
-  <div>
-    <label for="amount">Amount:</label>
-    <input type="number" name="amount" bind:value={cost.amount} required />
-  </div>
+	<div>
+		<label for="amount">Amount:</label>
+		<input type="number" name="amount" bind:value={cost.amount} required />
+	</div>
 
-  <div>
-    <label for="date">Date:</label>
-    <input type="date" name="date" bind:value={cost.date} required />
-  </div>
+	<div>
+		<label for="date">Date:</label>
+		<input type="date" name="date" bind:value={cost.date} required />
+	</div>
 
-  <button type="submit">Register Cost</button>
+	<button type="submit">Register Cost</button>
 </form>
 
 <style>

@@ -1,7 +1,16 @@
 <script lang="ts">
+	import type { Cost } from "$lib/models/Cost";
 	import type { PageData } from '../../routes/$types';
 
 	export let data: PageData;
+
+	let costs: Cost[] = []
+
+	if ('feed' in data) {
+		for (const e of Object(data.feed)) {
+			costs.push(e)
+		}
+	}
 
 	function formatDate(date: Date) {
 		return date.toLocaleDateString();
@@ -18,7 +27,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		{#each data.feed as cost (cost.id)}
+		{#each costs as cost (cost.id)}
 			<tr>
 				<td>{cost.category}</td>
 				<td>{cost.amount}</td>
