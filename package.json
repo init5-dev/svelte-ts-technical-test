@@ -10,7 +10,9 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"test": "vitest",
 		"lint": "prettier --check . && eslint .",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"postinstall": "npx prisma generate",
+		"deploy": "yarn build && netlify deploy --prod"
 	},
 	"prisma": {
 		"seed": "tsx prisma/seed.ts"
@@ -28,7 +30,6 @@
 		"eslint-plugin-svelte": "^2.35.1",
 		"prettier": "^3.1.1",
 		"prettier-plugin-svelte": "^3.1.2",
-		"prisma": "^5.8.1",
 		"svelte": "^4.2.7",
 		"svelte-check": "^3.6.0",
 		"tslib": "^2.4.1",
@@ -43,5 +44,8 @@
 		"sveltekit-superforms": "^1.13.3",
 		"ts-node": "^10.9.2",
 		"zod": "^3.22.4"
+	},
+	"peerDependencies": {
+		"prisma": "^5.8.1"
 	}
 }
