@@ -1,50 +1,65 @@
 import { PrismaClient } from "@prisma/client"
-import Cost from '../src/lib/models/Cost'
+import {Cost, Category} from '../src/lib/models/Cost'
 import {faker} from '@faker-js/faker'
+import categories from "./data/categories"
 
 const prisma = new PrismaClient()
 
-const generateFakeCosts = (length: number): Cost[] => {
-  const result: Cost[] = []
+const generateFakeData = (
+    minCats: number, 
+    maxCats: number, 
+    minPerCat: number, 
+    maxPerCat: number
+  ): Category[] => {
+  const numCats = minCats + Math.floor(Math.random() * (maxCats - minCats))
+  const categories: Category[] = []
 
-  for (let id:number=0; id < length; id++) {
-    const cost: Cost = {
-      id,
-      category: faker.commerce.department(),
-      amount: Number(faker.commerce.price()),
-      date: faker.date.between({
-        from: '2023-01-01T00:00:00.000Z', 
-        to:'2024-01-01T00:00:00.000Z'}),
-        file: faker.system.filePath()
+  for (let id:number=0; id < numCats; id++) {
+    const numCosts = minPerCat + Math.floor(Math.random() * (maxPerCat - minPerCat))
+    const costs: Cost[] = []
+
+    for (let id:number=0; id < numCosts; id++) {
+      const cost: Cost = {
+        amount: Number(faker.commerce.price()),
+        date: faker.date.between({
+          from: '2023-01-01T00:00:00.000Z', 
+          to:'2024-01-01T00:00:00.000Z'}),
+          file: faker.system.filePath()
+      }
+
+      costs.push(cost)
     }
 
-    result.push(cost)
+    const category: Category = {
+      name: faker.commerce.productMaterial(),
+      costs
+    }
+    
+    categories.push(category)
   }
 
-  return result
+  return categories
 }
 
 
 async function main() {
   console.log('Seeding database...')
   
-  const data = generateFakeCosts(100)
+  const categories = generateFakeData(3, 15, 3, 20)
 
-  for (const entry of data) {
-    const {id, category, amount, date, file} = entry
+  for (const category of categories) {
+    const {name, costs} = category
 
-    const cost = await prisma.cost.create({
+    await prisma.category.create({
       data: {
-        id,
-        category,
-        amount,
-        date,
-        file
+        name,
+        costs: {
+          create: costs
+        }
       }
     })
-
-    console.log(`Created cost with id: ${cost.id}`)
   }
+
   console.log('Seeding finished.')
 }
 

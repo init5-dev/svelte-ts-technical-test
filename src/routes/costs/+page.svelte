@@ -1,8 +1,8 @@
 <script lang="ts">
-  import Cost from "$lib/components/Cost.svelte";
+  import CostsTable from "$lib/components/CostsTable.svelte";
 	import type { PageData } from "./$types";
 
   export let data: PageData
 </script>
 
-<Cost {data} />
+<CostsTable {data} />

@@ -3,11 +3,14 @@
 </script>
 
 <h1>Welcome!</h1>
-<h2>Upload cost</h2>
-<UploadFile />
+<h2></h2>
+<p>Register a new cost</p>
 
+<p>or</p>
+<p><a href="/costs/upload">Upload cost</a></p>
 <style>
-  h1, h2, h3, h4, h5, h6 {
+  h1, h2, h3, h4, h5, h6, p {
+    width: 100vw;
     text-align: center;
   }
 
@@ -16,6 +19,10 @@
   }
 
   h2 {
+    font-size: 2rem;
+  }
+
+  p {
     font-size: 2rem;
   }
 </style>

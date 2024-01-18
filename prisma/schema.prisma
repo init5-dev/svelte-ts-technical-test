@@ -10,11 +10,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Category {
+  id Int @id @default(autoincrement())
+  name String
+  costs Cost[]
+}
+
 model Cost {
   id Int @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  category String
+  category Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
   amount Int
   date DateTime
   file String?
