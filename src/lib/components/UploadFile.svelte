@@ -50,6 +50,6 @@
 	}
 
 	button[type='submit']:hover {
-		background-color: #0069d9; /* Darken on hover */
+		background-color: #0069d9;
 	}
 </style>

@@ -1,4 +1,4 @@
-import type Cost from "$lib/models/Cost"
+import type {Cost} from "$lib/models/Cost"
 import { PrismaClient } from "@prisma/client"
 import type { PageServerLoad } from "./$types"
 
@@ -9,7 +9,13 @@ export const load = (async () => {
   const costs: Cost[] = []
 
   for (const entry of response) {
-    const {id, category, amount, date, file} = entry
+    const {id, categoryId, amount, date, file} = entry
+
+    const category = (await prisma.category.findUnique({
+      where: {
+        id: categoryId
+      }
+    }))?.name
 
     const cost = {
       id,

@@ -1,48 +1,51 @@
 import { error } from '@sveltejs/kit'
-import { Prisma, PrismaClient } from "@prisma/client"
+import { PrismaClient } from "@prisma/client"
+import type { PageServerLoad } from "../$types.js"
+import type { Cost } from "$lib/models/Cost.js"
+import {faker} from '@faker-js/faker'
 
 const prisma = new PrismaClient()
+
+export const load = (async () => {
+  const response = await prisma.category.findMany({select: {name: true, id:false}})
+  const categories = response.map(category => category.name)
+
+  return {feed: categories}
+}) satisfies PageServerLoad
 
 export const actions = {
   default: async ({ request }) => {
     const data = Object.fromEntries(await request.formData())
+    const {category, amount, date} = data
 
-    if (!(data.fileToUpload as File).name || (data.fileToUpload as File).name === 'undefined'
-    ) {
+    if (!category || !amount || !date) {
       return error(400, {
-        message: 'Please, select a file'
+        message: 'Incomplete data'
       })
     }
 
-    const { fileToUpload } = data as { fileToUpload: File }
-
-    console.log('Submited file:', fileToUpload.name)
-
-    const content = await fileToUpload.text()
+    const newCost: Cost = {
+      amount: Number(amount),
+      date: new Date(Date.parse(date.toString())),
+      file: faker.system.filePath()
+    }
 
     try {
-      const json = JSON.parse(content)
-
-      const newCost = await prisma.cost.create({
+      await prisma.category.update({
+        where: {
+          name: category.toString()
+        },
         data: {
-          ...json,
-          file: fileToUpload.name
+          costs: {
+            create: newCost
+          }
         }
       })
-
-      console.log('Created new cost with id:', newCost.id)
-    } catch (e) {
-      if (e instanceof Prisma.PrismaClientKnownRequestError) {
-        if (e.code === 'P2002') {
-          return error(422, {
-            message: 'This cost is already registered'
-          })
-        }
-      }
-
-      return error(422, {
-        message: 'Malformed cost file'
+    } catch (err) {
+      return error(500, {
+        message: 'Error creating new cost'
       })
-    }      
+    }
+   
   }
 }

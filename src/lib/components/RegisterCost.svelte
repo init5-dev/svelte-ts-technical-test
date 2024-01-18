@@ -1,6 +1,8 @@
 <script lang="ts">
   import type {Cost, Category} from "$lib/models/Cost"
-	import categories from '../../../mocks/categories'
+	import type { PageData } from "../../routes/$types";
+
+	export let data: PageData
 
   let cost: Cost = {
     amount: 0,
@@ -14,12 +16,12 @@
   }
 </script>
 
-<form on:submit|preventDefault={handleSubmit}>
+<form method="post" enctype="multipart/form-data">
   <div>
     <label for="category">Category:</label>
-    <select bind:value={selectedCategory}>
+    <select name='category' bind:value={selectedCategory}>
 			<option value="">Select a category</option>
-			{#each uniqueCategories as category}
+			{#each data.feed as category}
 				<option value={category}>{category}</option>
 			{/each}
 		</select>
@@ -27,12 +29,12 @@
 
   <div>
     <label for="amount">Amount:</label>
-    <input type="number" id="amount" bind:value={cost.amount} required />
+    <input type="number" name="amount" bind:value={cost.amount} required />
   </div>
 
   <div>
     <label for="date">Date:</label>
-    <input type="date" id="date" bind:value={cost.date} required />
+    <input type="date" name="date" bind:value={cost.date} required />
   </div>
 
   <button type="submit">Register Cost</button>
@@ -72,6 +74,6 @@
 	}
 
 	button[type='submit']:hover {
-		background-color: #0069d9; /* Darken on hover */
+		background-color: #0069d9;
 	}
 </style>
