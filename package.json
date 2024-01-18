@@ -11,8 +11,7 @@
 		"test": "vitest",
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
-		"postinstall": "npx prisma generate",
-		"deploy": "yarn build && netlify deploy --prod"
+		"postinstall": "npx prisma generate"
 	},
 	"prisma": {
 		"seed": "tsx prisma/seed.ts"
