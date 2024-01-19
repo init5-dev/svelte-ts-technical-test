@@ -1,11 +1,20 @@
+<script lang="ts">
 
-<form method="post" enctype="multipart/form-data">
-	<div>
-		<label for="file">Upload file</label>
-		<input type="file" id="file" name="fileToUpload" accept=".json" required />
-	</div>
+	import { Button, Fileupload, Label } from "flowbite-svelte";
+	import type { PageData } from '../../routes/$types';
+	import { superForm } from "sveltekit-superforms/client";
 
-	<button type="submit">Submit</button>
+	export let data: PageData;
+
+	const {form} = superForm(Object(data).form);
+</script>
+
+<form method="POST" enctype="multipart/form-data">
+	<Label class="space-y-2 mb-2">
+		<span>Upload file</span>
+		<Fileupload bind:value={$form.value} />
+	</Label>
+	<Button type="submit">Upload!</Button>
 </form>
 
 <style>
@@ -15,42 +24,5 @@
 		align-items: center;
 		padding: 20px;
 		margin-bottom: 20px;
-	}
-
-	div {
-		margin-bottom: 10px;
-	}
-
-	label {
-		margin-bottom: 5px;
-		font-weight: bold;
-	}
-
-	input[type='file'] {
-		padding: 10px;
-		border: 1px solid #ccc;
-		border-radius: 5px;
-	}
-
-	input[type='file']::-webkit-file-upload-button {
-		padding: 10px;
-		border: 1px solid #ccc;
-		border-radius: 5px;
-
-		background-color: #f0f0f0; 
-		color: #000; 
-	}
-
-	button[type='submit'] {
-		background-color: #007bff;
-		color: #fff;
-		padding: 10px 20px;
-		border: none;
-		border-radius: 5px;
-		cursor: pointer;
-	}
-
-	button[type='submit']:hover {
-		background-color: #0069d9;
 	}
 </style>

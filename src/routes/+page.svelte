@@ -1,27 +1,16 @@
 <script>
-  import UploadFile from "$lib/components/UploadFile.svelte";
+	import { Alert, GradientButton } from 'flowbite-svelte'
+  import {UploadSolid} from 'flowbite-svelte-icons'
 </script>
 
-<h1>Welcome!</h1>
-<p><a href="/costs/new">Register a new cost</a></p>
+<div class="flex flex-col items-center">
+  <h1 class="text-3xl mb-6">Welcome!</h1>
+	<div class="flex flex-col items-center gap-4">
+		<GradientButton href="/costs/new" color="purpleToBlue">Register a new cost</GradientButton>
+		<p>or</p>
+    <GradientButton href="/costs/upload" color="purpleToPink"><UploadSolid class="me-2" /> Upload file</GradientButton>
+	</div>
+</div>
 
-<p>or</p>
-<p><a href="/costs/upload">Upload cost</a></p>
 <style>
-  h1, h2, h3, h4, h5, h6, p {
-    width: 100vw;
-    text-align: center;
-  }
-
-  h1 {
-    font-size: 3rem;
-  }
-
-  h2 {
-    font-size: 2rem;
-  }
-
-  p {
-    font-size: 2rem;
-  }
 </style>

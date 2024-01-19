@@ -7,6 +7,8 @@ export const actions = {
   default: async ({ request }) => {
     const data = Object.fromEntries(await request.formData())
 
+    console.log('DATA:', request)
+
     if (!(data.fileToUpload as File).name || (data.fileToUpload as File).name === 'undefined'
     ) {
       return error(400, {

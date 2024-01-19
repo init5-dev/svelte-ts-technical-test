@@ -1,22 +1,43 @@
-import { error, redirect } from '@sveltejs/kit'
-import { PrismaClient } from "@prisma/client"
-import type { PageServerLoad } from "../$types.js"
-import type { Cost } from "$lib/models/Cost.js"
-import {faker} from '@faker-js/faker'
+import { z } from 'zod';
+import { superValidate } from 'sveltekit-superforms/server';
+import { PrismaClient } from "@prisma/client";
+import { faker}  from '@faker-js/faker'
+import { error, redirect } from "@sveltejs/kit";
+import type { Cost } from "$lib/models/Cost.js";
 
 const prisma = new PrismaClient()
 
-export const load = (async () => {
+const schema = z.object({
+  category: z.string(),
+  categories: z.string().array(),
+  amount: z.number().default(1),
+  date: z.date().default(new Date(Date.now()))
+})
+
+export const load = async () => {
   const response = await prisma.category.findMany({select: {name: true, id:false}})
   const categories = response.map(category => category.name)
 
-  return {feed: categories}
-}) satisfies PageServerLoad
+  const form = await superValidate(
+    {
+      categories,
+      amount: 0,
+      date: new Date(Date.now())
+    }, 
+  schema)
+  
+  return {form}
+}
 
 export const actions = {
   default: async ({ request }) => {
-    const data = Object.fromEntries(await request.formData())
-    const {category, amount, date} = data
+    const form = await superValidate(request, schema)
+
+    if (!form.valid) {
+      return error(400, 'Invalid form')
+    }
+
+    const {category, amount, date} = form.data
 
     if (!category || !amount || !date) {
       return error(400, {

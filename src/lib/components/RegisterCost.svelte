@@ -1,44 +1,31 @@
 <script lang="ts">
-	import type { Cost, Category } from '$lib/models/Cost';
 	import type { PageData } from '../../routes/$types';
+	import { superForm } from 'sveltekit-superforms/client';
 
 	export let data: PageData;
 
-	let cost: Cost = {
-		amount: 0,
-		date: new Date()
-	};
-
-	let selectedCategory = '';
-
-	const categories: string[] = [];
-
-	if ('feed' in data) {
-		for (const e of Object(data.feed)) {
-			categories.push(e);
-		}
-	}
+	const {form} = superForm(Object(data).form);
 </script>
 
-<form method="post" enctype="multipart/form-data">
+<form method="POST">
 	<div>
 		<label for="category">Category:</label>
-		<select name="category" bind:value={selectedCategory}>
+		<select name="category" bind:value={$form.category}>
 			<option value="">Select a category</option>
-			{#each categories as category}
+			{#each $form.categories as category}
 				<option value={category}>{category}</option>
 			{/each}
 		</select>
-	</div>
+	</div> 
 
 	<div>
 		<label for="amount">Amount:</label>
-		<input type="number" name="amount" bind:value={cost.amount} required />
+		<input type="number" name="amount" bind:value={$form.amount} required />
 	</div>
 
 	<div>
 		<label for="date">Date:</label>
-		<input type="date" name="date" bind:value={cost.date} required />
+		<input type="date" name="date" bind:value={$form.date} required />
 	</div>
 
 	<button type="submit">Register Cost</button>

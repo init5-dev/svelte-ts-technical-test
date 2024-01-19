@@ -1,32 +1,29 @@
-<nav>
-	<ul>
-    <li>
-			<a href="/">Home</a>
-		</li>
-		<li>
-			<a href="/costs">Costs</a>
-		</li>
-    <li>
-			<a href="/costs/new">New</a>
-		</li>
-    <li>
-			<a href="/costs/upload">Upload</a>
-		</li>
-	</ul>
-</nav>
+<script lang="ts">
+	import '../app.pcss';
+	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte'
+	import { Alert } from 'flowbite-svelte';
+</script>
+
+<Navbar  >
+  <NavBrand href="/">
+    <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Costs Management</span>
+  </NavBrand>
+  <NavHamburger  />
+  <NavUl >
+    <NavLi href="/">Home</NavLi>
+    <NavLi href="/costs">Costs</NavLi>
+    <NavLi href="/costs/new">New</NavLi>
+    <NavLi href="/costs/upload">Upload</NavLi>
+  </NavUl>
+</Navbar>
 
 <slot />
 
-<style>
-	body {
-		margin: 0;
-		font-family: sans-serif;
-	}
-
+<style lang="postcss">
 	nav {
 		background-color: #f0f0f0;
 		padding: 10px;
-    margin-bottom: 25px;
+		margin-bottom: 25px;
 	}
 
 	nav ul {
@@ -40,7 +37,7 @@
 		margin-right: 20px;
 	}
 
-  nav a {
+	nav a {
 		text-decoration: none;
 		color: #000;
 		padding: 5px 10px;
@@ -52,8 +49,7 @@
 		padding: 5px 10px;
 	}
 
-  a:hover {
+	a:hover {
 		color: #007bff;
 	}
-
 </style>
