@@ -1,0 +1,12 @@
+{
+	"/": [],
+	"/costs": [
+		"src/routes/costs/+page.server.ts"
+	],
+	"/costs/new": [
+		"src/routes/costs/new/+page.server.ts"
+	],
+	"/costs/upload": [
+		"src/routes/costs/upload/+page.server.ts"
+	]
+}
