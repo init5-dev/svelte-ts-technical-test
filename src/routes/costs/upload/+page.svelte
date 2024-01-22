@@ -3,7 +3,7 @@
 </script>
 
 <h1>Upload cost</h1>
-<UploadFile />
+<UploadFile/>
 
 <style>
 	h1 {

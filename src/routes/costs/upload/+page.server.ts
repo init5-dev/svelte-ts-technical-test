@@ -5,29 +5,22 @@ const prisma = new PrismaClient()
 
 export const actions = {
   default: async ({ request }) => {
-    const data = Object.fromEntries(await request.formData())
+    const data = await request.formData()
+    const file = data.get('file')
 
-    console.log('DATA:', request)
-
-    if (!(data.fileToUpload as File).name || (data.fileToUpload as File).name === 'undefined'
+    if (!(file as File).name || (file as File).name === 'undefined'
     ) {
       return error(400, {
         message: 'Please, select a file'
       })
     }
 
-    const { fileToUpload } = data as { fileToUpload: File }
-
-    console.log('Submited file:', fileToUpload.name)
-
-    const content = await fileToUpload.text()
+    const content = await file?.text()
     let success = false
 
     try {
       const json = JSON.parse(content)
       const {category, amount, date} = json
-
-      console.log(category)
 
       await prisma.category.update({
         where: {
@@ -38,13 +31,15 @@ export const actions = {
             create: {
               amount, 
               date: new Date(Date.parse(date)),
-              file: fileToUpload.name
+              file: file?.name
             }
           }
         }
       }) 
 
       success = true
+      
+      console.log('Filed added:', JSON.stringify(json))
     } catch (e) {
       console.log('ERROR:', e)
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -68,6 +63,6 @@ export const actions = {
       })
     } 
     
-    if (success) throw redirect(302, '/costs') 
+   if (success) throw redirect(302, '/costs?status=updated') 
   }
 }

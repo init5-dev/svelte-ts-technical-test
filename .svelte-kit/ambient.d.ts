@@ -74,7 +74,6 @@ declare module '$env/static/private' {
 	export const npm_package_description: string;
 	export const npm_package_devDependencies_typescript: string;
 	export const npm_package_devDependencies_tailwindcss: string;
-	export const INSIDE_NEMO_PYTHON: string;
 	export const NVM_DIR: string;
 	export const npm_package_readmeFilename: string;
 	export const MANDATORY_PATH: string;
@@ -246,7 +245,6 @@ declare module '$env/dynamic/private' {
 		npm_package_description: string;
 		npm_package_devDependencies_typescript: string;
 		npm_package_devDependencies_tailwindcss: string;
-		INSIDE_NEMO_PYTHON: string;
 		NVM_DIR: string;
 		npm_package_readmeFilename: string;
 		MANDATORY_PATH: string;

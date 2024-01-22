@@ -4,9 +4,11 @@ import type { PageServerLoad } from "./$types"
 
 const prisma = new PrismaClient()
 
-export const load = (async () => {
+export const load = (async ({params, url}) => {
   const response = await prisma.cost.findMany()
   const costs: Cost[] = []
+
+  const updated = url.searchParams.get('status')
 
   for (const entry of response) {
     const {id, categoryId, amount, date, file} = entry
@@ -28,5 +30,5 @@ export const load = (async () => {
     costs.push(cost)
   }
   
-  return { feed: costs }
+  return { feed: {costs, status: updated} }
 }) satisfies PageServerLoad

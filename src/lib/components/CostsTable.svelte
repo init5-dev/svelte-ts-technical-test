@@ -7,8 +7,10 @@
 	let costs: Cost[] = []
 
 	if ('feed' in data) {
-		for (const e of Object(data.feed)) {
-			costs.push(e)
+		if ('costs' in data?.feed) {
+			for (const e of Object(data?.feed?.costs)) {
+				costs.push(e)
+			}
 		}
 	}
 
