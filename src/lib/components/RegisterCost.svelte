@@ -66,30 +66,6 @@
 		margin-bottom: 10px;
 	}
 
-	label {
-		margin-bottom: 5px;
-		font-weight: bold;
-	}
-
-	input {
-		padding: 10px;
-		border: 1px solid #ccc;
-		border-radius: 5px;
-	}
-
-	button[type='submit'] {
-		background-color: #007bff;
-		color: #fff;
-		padding: 10px 20px;
-		border: none;
-		border-radius: 5px;
-		cursor: pointer;
-	}
-
-	button[type='submit']:hover {
-		background-color: #0069d9;
-	}
-
 	.form-section {
 		@apply flex w-96 flex-col items-start justify-start gap-2;
 	}
