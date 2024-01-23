@@ -29,8 +29,25 @@ const generateFakeData = (
       costs.push(cost)
     }
 
+    let categoryName = faker.commerce.productMaterial()
+    let i = 0
+    let skip = false
+
+    while (categories.find(category => category.name === categoryName)) {
+      categoryName = faker.commerce.productMaterial()
+
+      if (i >= 10) {
+        skip = true
+        break
+      }
+
+      i++
+    }
+
+    if (skip) continue
+
     const category: Category = {
-      name: faker.commerce.productMaterial(),
+      name: categoryName,
       costs
     }
     
