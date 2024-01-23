@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, Checkbox, TableSearch } from 'flowbite-svelte';
 	import type { Cost } from '$lib/models/Cost';
 	import type { TableData } from "$lib/types";
 
@@ -14,40 +15,19 @@
 	}
 </script>
 
-<table>
-	<thead>
-		<tr>
-			<th>Category</th>
-			<th>Amount</th>
-			<th>Date</th>
-		</tr>
-	</thead>
-	<tbody>
+<Table>
+	<TableHead>
+			<TableHeadCell>Category</TableHeadCell>
+			<TableHeadCell>Amount</TableHeadCell>
+			<TableHeadCell>Date</TableHeadCell>
+	</TableHead>
+	<TableBody>
 		{#each costs as cost (cost.id)}
-			<tr>
-				<td>{cost.category}</td>
-				<td>{cost.amount}</td>
-				<td>{formatDate(cost.date)}</td>
-			</tr>
+			<TableBodyRow>
+				<TableBodyCell>{cost.category}</TableBodyCell>
+				<TableBodyCell>{cost.amount}</TableBodyCell>
+				<TableBodyCell>{formatDate(cost.date)}</TableBodyCell>
+			</TableBodyRow>
 		{/each}
-	</tbody>
-</table>
-
-<style>
-	table {
-		border-collapse: collapse;
-		width: 100%;
-		margin-bottom: 20px;
-	}
-
-	th,
-	td {
-		padding: 10px;
-		text-align: left;
-		border: 1px solid #ddd;
-	}
-
-	th {
-		background-color: #f2f2f2;
-	}
-</style>
+	</TableBody>
+</Table>
