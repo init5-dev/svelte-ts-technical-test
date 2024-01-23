@@ -1,17 +1,19 @@
 import { z } from 'zod';
 import { superValidate } from 'sveltekit-superforms/server';
 import { PrismaClient } from "@prisma/client";
-import { faker}  from '@faker-js/faker'
 import { error, redirect } from "@sveltejs/kit";
 import type { Cost } from "$lib/models/Cost.js";
+import UploadError from "$lib/errors/upload-errors.js";
 
 const prisma = new PrismaClient()
+
+const now = new Date()
 
 const schema = z.object({
   category: z.string(),
   categories: z.string().array(),
-  amount: z.number().default(1),
-  date: z.date().default(new Date(Date.now()))
+  amount: z.number().int().positive().min(1),
+  date: z.date().max(now)
 })
 
 export const load = async () => {
@@ -21,8 +23,8 @@ export const load = async () => {
   const form = await superValidate(
     {
       categories,
-      amount: 0,
-      date: new Date(Date.now())
+      amount: 1,
+      date: now
     }, 
   schema)
   
@@ -34,7 +36,13 @@ export const actions = {
     const form = await superValidate(request, schema)
 
     if (!form.valid) {
-      return error(400, 'Invalid form')
+      console.log(form)
+      return {
+        error: {
+          code: UploadError.INVALID_FILE_DATA,
+          message: 'The date cannot be a date in the future'
+        }
+      }
     }
 
     const {category, amount, date} = form.data
@@ -48,7 +56,6 @@ export const actions = {
     const newCost: Cost = {
       amount: Number(amount),
       date: new Date(Date.parse(date.toString())),
-      file: faker.system.filePath()
     }
 
     let success = false
@@ -72,6 +79,6 @@ export const actions = {
       })
     }
    
-    if (success) throw redirect(302, '/costs') 
+    if (success) throw redirect(302, '/costs?status=updated') 
   }
 }

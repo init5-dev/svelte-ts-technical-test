@@ -1,34 +1,56 @@
 <script lang="ts">
+	import { Button, Input, Label, Select } from 'flowbite-svelte';
 	import type { PageData } from '../../routes/$types';
 	import { superForm } from 'sveltekit-superforms/client';
+	import type { UploadActionData } from '$lib/types';
 
+	export let formActionData: UploadActionData;
 	export let data: PageData;
 
-	const {form} = superForm(Object(data).form);
+	const { form, constraints, errors } = superForm(Object(data).form);
+
+	const categories = $form.categories.map((category: string) => ({
+		value: category,
+		name: category
+	}));
 </script>
 
 <form method="POST">
-	<div>
-		<label for="category">Category:</label>
-		<select name="category" bind:value={$form.category}>
-			<option value="">Select a category</option>
-			{#each $form.categories as category}
-				<option value={category}>{category}</option>
-			{/each}
-		</select>
-	</div> 
-
-	<div>
-		<label for="amount">Amount:</label>
-		<input type="number" name="amount" bind:value={$form.amount} required />
+	<div class="form-section">
+		<Label for="category">Category:</Label>
+		<Select
+			required
+			name="category"
+			items={categories}
+			bind:value={$form.category}
+			{...$constraints.category}
+		/>
 	</div>
 
-	<div>
-		<label for="date">Date:</label>
-		<input type="date" name="date" bind:value={$form.date} required />
+	<div class="form-section">
+		<Label for="amount">Amount:</Label>
+		<Input
+			required
+			type="number"
+			name="amount"
+			aria-invalid={$errors.amount ? 'true' : undefined}
+			bind:value={$form.amount}
+			{...$constraints.amount}
+		/>
 	</div>
 
-	<button type="submit">Register Cost</button>
+	<div class="form-section">
+		<Label for="date">Date:</Label>
+		<Input required type="date" name="date" bind:value={$form.date} {...$constraints.date} />
+	</div>
+
+	<Button type="submit">Register Cost</Button>
+
+	<div class="form-section">
+		{#if formActionData?.error}
+			<span class="alert">{formActionData?.error.message}</span>
+		{/if}
+	</div>
 </form>
 
 <style>
@@ -66,5 +88,9 @@
 
 	button[type='submit']:hover {
 		background-color: #0069d9;
+	}
+
+	.form-section {
+		@apply flex w-96 flex-col items-start justify-start gap-2;
 	}
 </style>

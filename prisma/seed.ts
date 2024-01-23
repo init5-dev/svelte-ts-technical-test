@@ -22,8 +22,7 @@ const generateFakeData = (
         amount: Number(faker.commerce.price()),
         date: faker.date.between({
           from: '2023-01-01T00:00:00.000Z', 
-          to:'2024-01-01T00:00:00.000Z'}),
-          file: faker.system.filePath()
+          to:'2024-01-01T00:00:00.000Z'})
       }
 
       costs.push(cost)

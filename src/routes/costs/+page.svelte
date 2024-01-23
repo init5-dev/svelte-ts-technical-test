@@ -27,7 +27,7 @@
 
 <CostsTable {data} />
 <div id="end-of-table" bind:this={endOfTable}></div>
-<Modal title="Nuevo registro" bind:open={defaultModal} autoclose>
-	<p>New cost added!</p>
+<Modal title="Success!" bind:open={defaultModal} autoclose>
+	<p>New cost added.</p>
   <Button>Got it!</Button>
 </Modal>
