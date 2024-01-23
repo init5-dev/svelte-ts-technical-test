@@ -1,5 +1,7 @@
-import { error, redirect } from '@sveltejs/kit'
+import { redirect } from '@sveltejs/kit'
 import { Prisma, PrismaClient } from "@prisma/client"
+import UploadError from '$lib/errors/upload-errors.js'
+import DatabaseError from '$lib/errors/database-errors.js'
 
 const prisma = new PrismaClient()
 
@@ -8,61 +10,58 @@ export const actions = {
     const data = await request.formData()
     const file = data.get('file')
 
-    if (!(file as File).name || (file as File).name === 'undefined'
-    ) {
-      return error(400, {
-        message: 'Please, select a file'
-      })
+    if (!file || !(file instanceof File)) {
+      return {
+        error: UploadError.NO_FILE
+      }
     }
 
-    const content = await file?.text()
+    const content = await file.text()
     let success = false
+    let json
 
     try {
-      const json = JSON.parse(content)
-      const {category, amount, date} = json
+      json = JSON.parse(content)
 
+    } catch (err) {
+      return {
+        error: UploadError.INVALID_FILE_DATA
+      }
+    }
+
+    try {
       await prisma.category.update({
         where: {
-          name: category
+          name: json.category
         },
         data: {
           costs: {
             create: {
-              amount, 
-              date: new Date(Date.parse(date)),
-              file: file?.name
+              amount: json.amount,
+              date: new Date(Date.parse(json.date)),
             }
           }
         }
-      }) 
+      })
 
       success = true
-      
+
       console.log('Filed added:', JSON.stringify(json))
     } catch (e) {
       console.log('ERROR:', e)
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         if (e.code === 'P2002') {
-          return error(422, {
-            message: 'This cost is already registered'
-          })
-        } else if (e.code === 'P2025') {
-          return error(422, {
-            message: 'File data is incorrect'
-          })
-        } else {
-          return error(422, {
-            message: e.message
-          })
-        }
+          return {
+            error: DatabaseError.DUPLICATED_COST
+          }
+        } 
       }
 
-      return error(422, {
-        message: 'Malformed cost file'
-      })
-    } 
-    
-   if (success) throw redirect(302, '/costs?status=updated') 
+      return {
+        error: UploadError.INVALID_FILE_DATA
+      }
+    }
+
+    if (success) throw redirect(302, '/costs?status=updated')
   }
 }

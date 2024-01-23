@@ -1,5 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// MONGODB 
 
 generator client {
   provider = "prisma-client-js"
@@ -24,5 +23,32 @@ model Cost {
   categoryId String @db.ObjectId
   amount Int
   date DateTime
-  file String?
 }
+
+
+// SQLITE (DEV TESTS)
+
+// generator client {
+//   provider = "prisma-client-js"
+// }
+
+// datasource db {
+//   provider = "sqlite"
+//   url      = env("SQLITE_DATABASE_URL")
+// }
+
+// model Category {
+//   id Int @id @default(autoincrement())
+//   name String @unique
+//   costs Cost[]
+// }
+
+// model Cost {
+//   id Int @id @default(autoincrement())
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   category Category @relation(fields: [categoryId], references: [id])
+//   categoryId Int
+//   amount Int
+//   date DateTime
+// }

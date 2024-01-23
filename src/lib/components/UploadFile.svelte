@@ -1,16 +1,28 @@
 <script lang="ts">
-	import { Button, Fileupload, Label } from "flowbite-svelte";
-	import type { PageData } from "../../routes/$types";
+	import { Button, Fileupload, Helper, Label } from 'flowbite-svelte';
+	import type { UploadActionData } from "$lib/types";
 
-	export let data: PageData;
-	export let value;
+	export let value: string;
+	export let form: UploadActionData;
+
+	console.log('DATA:', form);
+
+	const handleClick = () => {
+		form = { error: null}
+	}
 </script>
 
 <form method="POST" enctype="multipart/form-data">
-	<Label class="space-y-2 mb-2">
+	<Label class="mb-2 space-y-2">
 		<span>Upload file</span>
-		<Fileupload name='file' bind:value={value}/>
+		<Fileupload required name="file" bind:value accept=".json, .cost" on:click = {handleClick}/>
+		<Helper>COST or JSON</Helper>
+		{#if form?.error}
+		<Label class="alert" role="alert">{form.error.message}</Label>
+		{/if}
+		
 	</Label>
+
 	<Button type="submit">Upload!</Button>
 </form>
 

@@ -4,14 +4,14 @@ import type { PageServerLoad } from "./$types"
 
 const prisma = new PrismaClient()
 
-export const load = (async ({params, url}) => {
+export const load = (async ({url}) => {
   const response = await prisma.cost.findMany()
   const costs: Cost[] = []
 
   const updated = url.searchParams.get('status')
 
   for (const entry of response) {
-    const {id, categoryId, amount, date, file} = entry
+    const {id, categoryId, amount, date} = entry
 
     const category = (await prisma.category.findUnique({
       where: {
@@ -19,12 +19,11 @@ export const load = (async ({params, url}) => {
       }
     }))?.name
 
-    const cost = {
+    const cost: Cost = {
       id,
       category,
       amount,
-      date,
-      file
+      date
     }
 
     costs.push(cost)

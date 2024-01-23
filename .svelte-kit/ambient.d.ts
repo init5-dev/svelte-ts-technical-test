@@ -27,6 +27,7 @@
  */
 declare module '$env/static/private' {
 	export const DATABASE_URL: string;
+	export const SQLITE_DATABASE_URL: string;
 	export const GJS_DEBUG_TOPICS: string;
 	export const LESSOPEN: string;
 	export const npm_package_devDependencies_vitest: string;
@@ -198,6 +199,7 @@ declare module '$env/static/public' {
 declare module '$env/dynamic/private' {
 	export const env: {
 		DATABASE_URL: string;
+		SQLITE_DATABASE_URL: string;
 		GJS_DEBUG_TOPICS: string;
 		LESSOPEN: string;
 		npm_package_devDependencies_vitest: string;

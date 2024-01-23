@@ -6,9 +6,8 @@ export interface Category {
 
 export interface Cost {
   id?: number
-  category?: Category
+  category?: string
   categoryId?: number
   amount: number
   date: Date
-  file?: string| null
 }

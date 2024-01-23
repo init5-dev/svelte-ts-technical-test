@@ -1,18 +1,13 @@
 <script lang="ts">
-	import type { Cost } from "$lib/models/Cost";
-	import type { PageData } from '../../routes/$types';
+	import type { Cost } from '$lib/models/Cost';
+	import type { TableData } from "$lib/types";
 
-	export let data: PageData;
+	export let data: TableData;
+	let costs: Cost[] = [];
 
-	let costs: Cost[] = []
-
-	if ('feed' in data) {
-		if ('costs' in data?.feed) {
-			for (const e of Object(data?.feed?.costs)) {
-				costs.push(e)
-			}
+	for (const e of data?.feed?.costs) {
+			costs.push(e);
 		}
-	}
 
 	function formatDate(date: Date) {
 		return date.toLocaleDateString();
@@ -25,7 +20,6 @@
 			<th>Category</th>
 			<th>Amount</th>
 			<th>Date</th>
-			<th>File</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -34,11 +28,6 @@
 				<td>{cost.category}</td>
 				<td>{cost.amount}</td>
 				<td>{formatDate(cost.date)}</td>
-				<td>
-					{#if cost.file}
-						<a href={cost.file} target="_blank" rel="noopener noreferrer">View File</a>
-					{/if}
-				</td>
 			</tr>
 		{/each}
 	</tbody>
@@ -61,16 +50,4 @@
 	th {
 		background-color: #f2f2f2;
 	}
-
-  a {
-		text-decoration: none;
-		color: #0099ff;
-		padding: 5px 10px;
-	}
-
-  a:hover {
-		color: #007bff;
-    text-decoration: underline;
-	}
-
 </style>

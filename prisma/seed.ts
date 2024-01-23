@@ -22,15 +22,31 @@ const generateFakeData = (
         amount: Number(faker.commerce.price()),
         date: faker.date.between({
           from: '2023-01-01T00:00:00.000Z', 
-          to:'2024-01-01T00:00:00.000Z'}),
-          file: faker.system.filePath()
+          to:'2024-01-01T00:00:00.000Z'})
       }
 
       costs.push(cost)
     }
 
+    let categoryName = faker.commerce.productMaterial()
+    let i = 0
+    let skip = false
+
+    while (categories.find(category => category.name === categoryName)) {
+      categoryName = faker.commerce.productMaterial()
+
+      if (i >= 10) {
+        skip = true
+        break
+      }
+
+      i++
+    }
+
+    if (skip) continue
+
     const category: Category = {
-      name: faker.commerce.productMaterial(),
+      name: categoryName,
       costs
     }
     
